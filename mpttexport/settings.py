@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'exporter',
     'mptt',
 ]
 
@@ -54,6 +55,13 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mpttexport.urls'
 
 TEMPLATES = [
+    {   'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'environment': 'mpttexport.jinja2.environment'
+        }
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],

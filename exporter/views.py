@@ -9,10 +9,14 @@ def index(request, **kwargs):
 
 def export(request, **kwargs):
     filename, ext = path.splitext(request.path[1:])
+    print(filename, ext)
     try:
-        entry = Entry.objects.get(content=filename)
-    except:
-        return HttpResponse("ERROR: No such object", content_type="text/plain")
+        #entry = list(filter(lambda x: x.content == filename and x.is_root_node(), Entry.objects.all()))
+        #assert len(entry) == 1, f"No such element: {filename}"
+        #entry = entry[0]
+        entry = Entry.objects.get(content=filename,parent=None) #.filter(parent__isnull=True)
+    except Exception as e:
+        return HttpResponse(e, content_type="text/plain")
     if ext == '.json':
         return HttpResponse(entry.to_json(), content_type="application/json")
     elif ext == '.yaml':

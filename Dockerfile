@@ -2,16 +2,16 @@ FROM python:3.6.9-alpine
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apk add --no-cache netcat-openbsd curl libstdc++ lapack gettext
+RUN apk add --no-cache netcat-openbsd curl
 
 RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 WORKDIR /code
 
 COPY requirements.txt .
+RUN apk add --no-cache postgresql-libs
 RUN \
- apk add --no-cache postgresql-libs wkhtmltopdf ttf-dejavu  && \
- apk add --no-cache --virtual .build-deps gcc g++ libstdc++ musl-dev postgresql-dev lapack-dev libffi-dev && \
+ apk add --no-cache --virtual .build-deps gcc g++ libstdc++ musl-dev postgresql-dev libffi-dev && \
  python3 -m pip install -r requirements.txt --no-cache-dir && \
  apk --purge del .build-deps
 

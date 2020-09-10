@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY') #'_f=j3rtyzvc9#3wt$^%nw)$9@zi8@s_q$b2_92ao*t!igr1130'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -55,7 +55,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mpttexport.urls'
 
 TEMPLATES = [
-    {   'BACKEND': 'django.template.backends.jinja2.Jinja2',
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {

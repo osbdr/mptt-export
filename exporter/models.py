@@ -5,9 +5,11 @@ import json
 import toml
 import yaml
 
+
 class Entry(MPTTModel):
     content = models.CharField(max_length=500)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+
     def __str__(self):
         return self.content
 
@@ -24,7 +26,7 @@ class Entry(MPTTModel):
             return dict(zip(keys, values))
         else:
             raise ValueError("Invalid Structure: Mixed K/V and Arrays")
-        
+ 
     def to_json(self):
         return json.dumps(self.to_dict())
 
@@ -43,10 +45,12 @@ class Entry(MPTTModel):
     def nginx_helper(self):
         indent = "\t" * (self.level - 1)
         if self.is_leaf_node():
-            return indent + self.content + ";\n"
+            return f'{indent}{self.content};\n'
 
         children = self.get_children()
         if all(child.is_leaf_node() for child in children):
-            return indent + self.content + " " + " ".join([child.content for child in children]) + ";\n"
+            child_entries = " ".join([child.content for child in children])
+            return f'{indent}{self.content} {child_entries};\n'
         else:
-            return indent + self.content + " {\n" + "".join([child.nginx_helper() for child in children]) + indent + "}\n"
+            child_entries = "".join([child.nginx_helper() for child in children])
+            return f'{indent}{self.content} {{\n{child_entries}{indent}}}\n'
